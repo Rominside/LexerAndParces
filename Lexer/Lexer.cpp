@@ -17,67 +17,83 @@ void Lexer::Lexer_analis()
 
 			if (result == "РАВНО")
 			{
-				Token_mass.push_back(Token(Token::Kind::Равно));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Равно"));
 			}
 			if (result == "ПЛЮС")
 			{
-				Token_mass.push_back(Token(Token::Kind::Плюс));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Плюс"));
 			}
 			if (result == "МИНУС")
 			{
-				Token_mass.push_back(Token(Token::Kind::Минус));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Минус"));
 			}
 			if (result == "(")
 			{
-				Token_mass.push_back(Token(Token::Kind::ЛеваяСкобка));
+				Token_mass.push_back(Token(Token::Kind::ЛеваяСкобка, ""));
 			}
 			if (result == ")")
 			{
-				Token_mass.push_back(Token(Token::Kind::ПраваяСкобка));
+				Token_mass.push_back(Token(Token::Kind::ПраваяСкобка, ""));
 			}
 			if ('0' <= result.at(0) and result.at(0) <= '9')
 			{
-				Token_mass.push_back(Token(Token::Kind::Число, result));
+				Token_mass.push_back(Token(Token::Kind::Число, stoi(result), ""));
 			}
 			if ('а' <= result.at(0) and result.at(0) <= 'я')
 			{
-				Token_mass.push_back(Token(Token::Kind::Переменная, result));
+				Token_mass.push_back(Token(Token::Kind::Переменная, 0, result));
 			}
 			if (result == "\n")
 			{
-				Token_mass.push_back(Token(Token::Kind::НоваяСтрока));
+				Token_mass.push_back(Token(Token::Kind::НоваяСтрока, "Строка"));
 			}
 			if (result == "УМНОЖИТЬ")
 			{
-				Token_mass.push_back(Token(Token::Kind::Умножение));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Умножение"));
 			}
 			if (result == "ПОДЕЛИТЬ")
 			{
-				Token_mass.push_back(Token(Token::Kind::Деление));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Деление"));
 			}
 			if (result == "ЕСЛИ")
 			{
-				Token_mass.push_back(Token(Token::Kind::Условие));
+				Token_mass.push_back(Token(Token::Kind::Условие, "Условие"));
 			}
 			if (result == "ЦИКЛ")
 			{
-				Token_mass.push_back(Token(Token::Kind::Цикл));
+				Token_mass.push_back(Token(Token::Kind::Цикл, ""));
 			}
 			if (result == "УСЛОВНЫЙЦИКЛ")
 			{
-				Token_mass.push_back(Token(Token::Kind::УсловныйЦикл));
+				Token_mass.push_back(Token(Token::Kind::УсловныйЦикл, "УсловныйЦикл"));
 			}
 			if (result == "ФУНКЦИЯ")
 			{
-				Token_mass.push_back(Token(Token::Kind::Функция));
+				Token_mass.push_back(Token(Token::Kind::Функция, result));
 			}
 			if (result == "<")
 			{
-				Token_mass.push_back(Token(Token::Kind::Меньше));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Меньше"));
 			}
 			if (result == ">")
 			{
-				Token_mass.push_back(Token(Token::Kind::Больше));
+				Token_mass.push_back(Token(Token::Kind::БинарныйОператор, "Больше"));
+			}
+			if (result == "{")
+			{
+				Token_mass.push_back(Token(Token::Kind::ЛеваяФигурнаяСкобка, ""));
+			}
+			if (result == "}")
+			{
+				Token_mass.push_back(Token(Token::Kind::ПраваяФигурнаяСкобка, ""));
+			}
+			if (result == "[")
+			{
+				Token_mass.push_back(Token(Token::Kind::ЛеваяКвадратнаяСкобка, "["));
+			}
+			if (result == "]")
+			{
+				Token_mass.push_back(Token(Token::Kind::ПраваяКвадратнаяСкобка, "]"));
 			}
 		}
 		catch (LexerException& ex)
@@ -87,6 +103,8 @@ void Lexer::Lexer_analis()
 			break;
 		}
 	}
+
+	Token_mass.push_back(Token(Token::Kind::КонецПрограммы, ""));
 }
 
 std::string Lexer::Next_token(std::string text)
@@ -94,7 +112,7 @@ std::string Lexer::Next_token(std::string text)
 	std::smatch result;
 	std::smatch result_number;
 	std::smatch result_variable;
-	std::regex regular("<|>|ФУНКЦИЯ|УСЛОВНЫЙЦИКЛ|ЦИКЛ|ЕСЛИ|УМНОЖИТЬ|ПОДЕЛИТЬ|\\(|\\)|ПЛЮС|РАВНО|МИНУС|[а-я]+|[0-9]+|\\n");
+	std::regex regular("\\]|\\[|\\{|\\}|<|>|ФУНКЦИЯ|УСЛОВНЫЙЦИКЛ|ЦИКЛ|ЕСЛИ|УМНОЖИТЬ|ПОДЕЛИТЬ|\\(|\\)|ПЛЮС|РАВНО|МИНУС|[а-я]+|[0-9]+|\\n");
 	std::regex regular_number("[0-9]+");
 	std::regex regular_variable("[а-я]+");
 
@@ -147,7 +165,7 @@ void Lexer::Pars_text(std::string text)
 				lexem_mass.push_back(word);
 				word.clear();
 			}
-			if (word.size() != 0 and j == mass_word.at(it).size() -1 )
+			if (word.size() != 0 and j == mass_word.at(it).size() - 1)
 			{
 				lexem_mass.push_back(word);
 				word.clear();
@@ -158,4 +176,9 @@ void Lexer::Pars_text(std::string text)
 			lexem_mass.push_back("\n");
 		}
 	}
+}
+
+std::vector<Token>::iterator Lexer::get_Begin()
+{
+	return this->Token_mass.begin()++;
 }

@@ -1,27 +1,24 @@
 #include "Token.h"
 
-Token::Token(Kind type, std::string value)
+Token::Token(Kind type, int value, std::string name)
 {
 	this->type = type;
 	this->value = value;
+	this->name = name;
 }
 
-Token::Token(Kind type)
+Token::Token(Kind type, std::string name)
 {
 	this->type = type;
+	this->name = name;
 }
 
 std::string Token::Get_string()
 {
 	std::string type;
+	bool isNumber = false;
 	switch (this->type)
 	{
-	case Kind::Плюс:
-		type = "Плюс";
-		break;
-	case Kind::Минус:
-		type = "Минус";
-		break;
 	case Kind::ЛеваяСкобка:
 		type = "ЛеваяСкобка";
 		break;
@@ -31,20 +28,12 @@ std::string Token::Get_string()
 	case Kind::Переменная:
 		type = "Переменная";
 		break;
-	case Kind::Равно:
-		type = "Равно";
-		break;
 	case Kind::Число:
 		type = "Число";
+		isNumber = true;
 		break;
 	case Kind::НоваяСтрока:
 		type = "НоваяСтрока";
-		break;
-	case Kind::Деление:
-		type = "Деление";
-		break;
-	case Kind::Умножение:
-		type = "Умножение";
 		break;
 	case Kind::УсловныйЦикл:
 		type = "УсловныйЦикл";
@@ -58,14 +47,47 @@ std::string Token::Get_string()
 	case Kind::Функция:
 		type = "Функция";
 		break;
-	case Kind::Больше:
-		type = "Больше";
+	case Kind::КонецПрограммы:
+		type = "КонецПрограммы";
 		break;
-	case Kind::Меньше:
-		type = "Меньше";
+	case Kind::ЛеваяФигурнаяСкобка:
+		type = "ЛеваяФигурнаяСкобка";
+		break;
+	case Kind::ПраваяФигурнаяСкобка:
+		type = "ПраваяФигурнаяСкобка";
+		break;
+	case Kind::БинарныйОператор:
+		type = "БинарныйОператор";
+		break;
+	case Kind::ЛеваяКвадратнаяСкобка:
+		type = "ЛеваяКвадратнаяСкобка";
+		break;
+	case Kind::ПраваяКвадратнаяСкобка:
+		type = "ПраваяКвадратнаяСкобка";
 		break;
 	default:
 		break;
 	}
-	return "type of object {" + type + "} value of object {" + this->value + "}";
+	if (isNumber == true)
+	{
+		return "type of object {" + type + "} value of object {" + std::to_string(this->value) + "}" + " name of object {" + this->name + "}";
+	}
+	return "type of object {" + type + "} value of object {" + "}" + " name of object {" + this->name + "}";
 }
+
+Token::Kind Token::get_Kind()
+{
+	return this->type;
+}
+
+int Token::get_value()
+{
+	return this->value;
+}
+
+std::string Token::get_name()
+{
+	return this->name;
+}
+
+

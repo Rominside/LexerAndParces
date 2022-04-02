@@ -7,28 +7,30 @@ class Token
 public:
 	enum class Kind
 	{
-		Равно,
+		БинарныйОператор,
 		Переменная,
 		ПраваяСкобка,
 		ЛеваяСкобка,
-		Плюс,
-		Минус,
 		Число,
 		НоваяСтрока,
-		Умножение,
-		Деление,
 		Условие,
 		Цикл,
 		УсловныйЦикл,
 		Функция,
-		Больше,
-		Меньше
+		КонецПрограммы,
+		ЛеваяФигурнаяСкобка,
+		ПраваяФигурнаяСкобка,
+		ЛеваяКвадратнаяСкобка,
+		ПраваяКвадратнаяСкобка
 	};
-	Token(Kind type, std::string value);
-	Token(Kind type);
+	Token(Kind type, int value, std::string name);
+	Token(Kind type, std::string name);
 	std::string Get_string();
+	Token::Kind get_Kind();
+	int get_value();
+	std::string get_name();
 private:
 	Kind type;
-	std::string value;
+	int value;
+	std::string name;
 };
-

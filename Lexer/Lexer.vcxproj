@@ -139,17 +139,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Condition.cpp" />
+    <ClCompile Include="Formula.cpp" />
+    <ClCompile Include="Function.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="LexerExecpions.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="RootObject.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Variable.cpp" />
+    <ClCompile Include="While.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Condition.h" />
+    <ClInclude Include="Formula.h" />
+    <ClInclude Include="Function.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="LexerExecpions.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="RootObject.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="Variable.h" />
+    <ClInclude Include="While.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
