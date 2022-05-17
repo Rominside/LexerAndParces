@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Lexer.h"
 #include "Parser.h"
+#include "interpreter.h"
 
 #include "RootObject.h"
 
@@ -16,7 +17,7 @@ int main()
                                   \n   еякх Б окчя 10 > 0 \
                                   \n   ( \
                                   \n      Ю пюбмн Ю окчя 5 \
-                                  \n      А пюбмн 10 слмнфхрэ [ 2 окчя 4 ] окчя 34 \
+                                  \n      А пюбмн 10 слмнфхрэ  [ 2 окчя 4 ] окчя 34 \
                                   \n   ) \
                                   \n   сякнбмшижхйк Ю < А \
                                   \n   ( \
@@ -44,7 +45,9 @@ int main()
 
 	std::cout << pr.GetRoot().sonsMass.at(0)->getString() << std::endl;
 
-	pr.ExecuteFunction(pr.GetRoot().sonsMass.at(0), 0);
+	interpreter Interpreter(pr);
+
+	Interpreter.ExecuteFunction(pr.GetRoot().sonsMass.at(0), 0);
 
 	std::cout << std::endl;
 

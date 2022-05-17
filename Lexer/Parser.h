@@ -33,12 +33,6 @@ public:
 	std::vector<Token>::iterator FormulaTree(RootObject* parentObject, std::vector<Token>::iterator functionStart);
 	void DrawTree(RootObject root, std::string ot);
 	RootObject GetRoot();
-
-	void ExecuteFunction(RootObject* parent, int StartPosition);
-	bool ExecuteBoolLine(RootObject* parent);
-	int ExecuteValueLine(RootObject* parent);
-	void ExecuteIf(RootObject* parent);
-	void ExecuteWhile(RootObject* parent);
 private:
 	RootObject root;
 	int currentLine = 1;

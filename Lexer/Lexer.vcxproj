@@ -142,6 +142,7 @@
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Function.cpp" />
+    <ClCompile Include="interpreter.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="LexerExecpions.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Function.h" />
+    <ClInclude Include="interpreter.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="LexerExecpions.h" />
     <ClInclude Include="Line.h" />
