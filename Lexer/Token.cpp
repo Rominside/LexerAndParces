@@ -65,6 +65,37 @@ std::string Token::Get_string()
 	case Kind::ПраваяКвадратнаяСкобка:
 		type = "ПраваяКвадратнаяСкобка";
 		break;
+		// LinkedList
+	case Kind::LinkedList:
+		type = "LinkedList";
+		break;
+	case Kind::push_first:
+		type = "push_first";
+		break;
+	case Kind::push_back:
+		type = "push_back";
+		break;
+	case Kind::push_in:
+		type = "push_in";
+		break;
+	case Kind::pop_from:
+		type = "pop_from";
+		break;
+	case Kind::find:
+		type = "find";
+		break;
+	case Kind::size:
+		type = "size";
+		break;
+	case Kind::Точка:
+		type = "Точка";
+		break;
+	case Kind::Запятая:
+		type = "Запятая";
+		break;
+	case Kind::LinkedMethod:
+		type = "LinkedMethod";
+		break;
 	default:
 		break;
 	}

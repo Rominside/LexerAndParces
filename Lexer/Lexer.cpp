@@ -8,12 +8,24 @@ void Lexer::Lexer_analis()
 	std::string result;
 	std::smatch narrow;
 	std::regex regular_s("\s");
+	//
+	std::vector<std::string> fun1;
+	std::vector<std::string> fun2;
+	for (int i = 0; i < lexem_mass.size(); i++)
+	{
+		fun1 = Next_tokens(lexem_mass.at(i));
+		for (int j = 0; j < fun1.size(); j++)
+		{
+			fun2.push_back(fun1.at(j));
+		}
+	}
+	//
 
-	for (int it = 0; it < lexem_mass.size(); it++)
+	for (int it = 0; it < fun2.size(); it++)
 	{
 		try
 		{
-			result = Next_token(lexem_mass.at(it));
+			result = Next_token(fun2.at(it));
 
 			if (result == "ĞÀÂÍÎ")
 			{
@@ -95,6 +107,44 @@ void Lexer::Lexer_analis()
 			{
 				Token_mass.push_back(Token(Token::Kind::ÏğàâàÿÊâàäğàòíàÿÑêîáêà, "]"));
 			}
+			// LinkedList
+			if (result == ".")
+			{
+				Token_mass.push_back(Token(Token::Kind::Òî÷êà, "."));
+			}
+			if (result == ",")
+			{
+				Token_mass.push_back(Token(Token::Kind::Çàïÿòàÿ, ","));
+			}
+			if (result == "List")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedList, "LinkedList"));
+			}
+			if (result == "push_first")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "push_first"));
+			}
+			if (result == "push_back")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "push_back"));
+			}
+			if (result == "push_in")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "push_in"));
+			}
+			if (result == "pop_from")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "pop_from"));
+			}
+			if (result == "find")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "find"));
+			}
+			if (result == "size")
+			{
+				Token_mass.push_back(Token(Token::Kind::LinkedMethod, "size"));
+			}
+			// LinkedList
 		}
 		catch (LexerException& ex)
 		{
@@ -107,6 +157,104 @@ void Lexer::Lexer_analis()
 	Token_mass.push_back(Token(Token::Kind::ÊîíåöÏğîãğàììû, ""));
 }
 
+std::vector<std::string> Lexer::Next_tokens(std::string words)
+{
+	std::smatch result;
+	std::smatch result_number;
+	std::smatch result_variable;
+	std::regex regular("\\]|\\[|\\{|\\}|<|>|ÔÓÍÊÖÈß|ÓÑËÎÂÍÛÉÖÈÊË|ÖÈÊË|ÅÑËÈ|ÓÌÍÎÆÈÒÜ|ÏÎÄÅËÈÒÜ|\\(|\\)|ÏËŞÑ|ĞÀÂÍÎ|ÌÈÍÓÑ|[à-ÿ]+|[0-9]+|\\n");
+	std::regex regular_number("[0-9]+");
+	std::regex regular_variable("[à-ÿ]+");
+	// LinkedList
+	std::regex regular_LinkedList("\\,|\\.|List|push_first|push_back|push_in|pop_from|find|size");
+	// LinkedList   token.push_back(text[i]);
+
+	int k = 0;
+	std::vector<std::string> mass_token;
+	std::string token;
+	std::string cope_text = words;
+	bool direction = true;
+	std::string word;
+	while (cope_text.size() != 0)
+	{
+		word.push_back(cope_text[0]);
+		//std::cout << word << std::endl;
+		//token.push_back(text[i]);
+		if (std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList))
+		{
+			//std::cout << word << "if bloc" << std::endl;
+			do
+			{
+				//std::cout << word << std::endl;			
+				token.push_back(cope_text[k]);
+				k = k + 1;
+				if (k == cope_text.size())
+					break;
+				word.clear();
+				//std::cout << word << std::endl;
+				word.push_back(cope_text[k]);
+			} while ((std::regex_match(token, result, regular) || std::regex_match(token, result, regular_LinkedList)) &&
+				    (std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList)));
+
+			if ((std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList)) &&
+				(!std::regex_match(token, result, regular) && !std::regex_match(token, result, regular_LinkedList)))
+			{
+				if (k > 1)
+				{
+					/*if (word == ".")
+					{
+						token.pop_back();
+						k = k - 1;
+					}*/
+					token.pop_back();
+					k = k - 1;
+				}
+			}
+			
+			//std::cout << token << std::endl;
+			//std::cout << words.size() << std::endl;
+			mass_token.push_back(token);
+		}
+		else
+		{
+			//std::cout << word << std::endl;
+			while (!std::regex_match(word, result, regular) && !std::regex_match(word, result, regular_LinkedList))
+			{
+				//std::cout << word << "else block" << std::endl;
+				token.push_back(cope_text[k]);
+				k++;
+				word.clear();
+				if (k == cope_text.size())
+					break;
+				word.push_back(cope_text[k]);
+				//std::cout << token << "fff" << std::endl;
+			}
+			//token.pop_back();
+			//std::cout << token << std::endl;
+			//std::cout << token.size() << std::endl;
+			//std::cout << words.size() << std::endl;
+			if (std::regex_match(token, result, regular) || std::regex_match(token, result, regular_LinkedList))
+			{
+				mass_token.push_back(token);
+			}
+			else
+			{
+				std::cout << "chto to ne tak" << std::endl;
+				throw LexerException("{" + cope_text + "} error lexem");
+			}
+		}
+
+		cope_text.erase(0, k);
+		//std::cout << cope_text << std::endl;
+		//std::cout << "next" << std::endl;
+		k = 0;
+		token.clear();
+		word.clear();
+	}
+
+	return mass_token;
+}
+
 std::string Lexer::Next_token(std::string text)
 {
 	std::smatch result;
@@ -115,10 +263,88 @@ std::string Lexer::Next_token(std::string text)
 	std::regex regular("\\]|\\[|\\{|\\}|<|>|ÔÓÍÊÖÈß|ÓÑËÎÂÍÛÉÖÈÊË|ÖÈÊË|ÅÑËÈ|ÓÌÍÎÆÈÒÜ|ÏÎÄÅËÈÒÜ|\\(|\\)|ÏËŞÑ|ĞÀÂÍÎ|ÌÈÍÓÑ|[à-ÿ]+|[0-9]+|\\n");
 	std::regex regular_number("[0-9]+");
 	std::regex regular_variable("[à-ÿ]+");
+	// LinkedList
+	std::regex regular_LinkedList("\\,|\\.|List|push_first|push_back|push_in|pop_from|find|size");
+	// LinkedList   token.push_back(text[i]);
+
+	//int k = 0;
+	//std::vector<std::string> mass_token;
+	//std::string token;
+	//std::string cope_text = text;
+	//bool direction = true;
+	//std::string word;
+	//while (cope_text.size() != 0)
+	//{
+	//	word.push_back(cope_text[0]);
+	//	std::cout << word << std::endl;
+	//	//token.push_back(text[i]);
+	//	if (std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList))
+	//	{
+	//		std::cout << word << "if bloc" << std::endl;
+	//		while (std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList))
+	//		{
+	//			std::cout << word << std::endl;
+	//			token.push_back(cope_text[k]);
+	//			k = k + 1;
+	//			word.clear();
+	//			std::cout << word << std::endl;
+	//			word.push_back(cope_text[k]);
+	//		}
+	//		mass_token.push_back(token);
+	//	}
+	//	else
+	//	{
+	//		std::cout << word << std::endl;
+	//		while (!std::regex_match(word, result, regular) && !std::regex_match(word, result, regular_LinkedList))
+	//		{
+	//			std::cout << word << "else block" << std::endl;
+	//			token.push_back(cope_text[k]);
+	//			k++;
+	//			word.clear();
+	//			if (k > cope_text.size())
+	//				break;
+	//			word.push_back(cope_text[k]);
+	//			std::cout << token << "fff" << std::endl;
+	//		}
+	//		token.pop_back();
+	//		std::cout << token.size() << std::endl;
+	//		std::cout << text.size() << std::endl;
+	//		if (std::regex_match(token, result, regular) || std::regex_match(token, result, regular_LinkedList))
+	//		{
+	//			mass_token.push_back(token);
+	//		}
+	//		else
+	//		{
+	//			std::cout << "chto to ne tak" << std::endl;
+	//			throw LexerException("{" + cope_text + "} error lexem");
+	//		}
+	//	}
+
+	//	cope_text.erase(0, k);
+	//	std::cout << cope_text << std::endl;
+	//	std::cout << "next" << std::endl;
+	//	k = 0;
+	//	//if (std::regex_match(word, result, regular) || std::regex_match(word, result, regular_LinkedList))
+	//	//{
+	//	//	direction = true;
+	//	//}
+	//	//else
+	//	//{
+	//	//	direction = false;
+	//	//}
+
+	//	token.clear();
+	//	word.clear();
+	//}
+	//for (int i = 0; i < mass_token.size(); i++)
+	//	std::cout << mass_token[i] << std::endl;
 
 	if (!std::regex_match(text, result, regular))
 	{
-		throw LexerException("{" + text + "} error lexem");
+		if (!std::regex_match(text, result, regular_LinkedList))
+		{
+			throw LexerException("{" + text + "} error lexem");
+		}
 	}
 
 	return result.str();
@@ -182,3 +408,6 @@ std::vector<Token>::iterator Lexer::get_Begin()
 {
 	return this->Token_mass.begin()++;
 }
+
+// List a = [5, 6, 19]
+// a.push_first(b) => a = [b, 5, 6, 19]

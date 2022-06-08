@@ -63,12 +63,16 @@ std::vector<Token>::iterator Parser::SimpleBranch(RootObject* parentObject, std:
 				}
 			}
 
+
+			
+
 			if (childType == Token::Kind::НоваяСтрока)
 			{
 				//this->currentLine++;
 				std::vector<Token>::iterator nextToken = functionStart + 1;
 				if (nextToken->get_Kind() != Token::Kind::Переменная && nextToken->get_Kind() != Token::Kind::Условие &&
-					nextToken->get_Kind() != Token::Kind::УсловныйЦикл && nextToken->get_Kind() != Token::Kind::Цикл)
+					nextToken->get_Kind() != Token::Kind::УсловныйЦикл && nextToken->get_Kind() != Token::Kind::Цикл && 
+					nextToken->get_Kind() != Token::Kind::LinkedList)
 				{
 					throw LexerException("semantic error", this->currentLine);
 				}
@@ -121,6 +125,42 @@ std::vector<Token>::iterator Parser::SimpleBranch(RootObject* parentObject, std:
 					{
 						functionStart = ConditionalBranch(whilee, functionStart, Token::Kind::НоваяСтрока,
 							Token::Kind::ПраваяСкобка, false);
+					}
+					catch (LexerException& ex)
+					{
+						std::cout << ex.whatPars() << std::endl;
+						return nextToken;
+					}
+				}
+				if (nextToken->get_Kind() == Token::Kind::LinkedList) //////////////////////////////////////////////////////////////////
+				{
+					std::vector<Token>::iterator DOP_next = nextToken + 1;
+					if (DOP_next->get_Kind() != Token::Kind::Переменная)
+						throw LexerException("semantic error", this->currentLine);
+
+					//RootObject* list = nullptr;
+					//bool alredyExist = false;
+					//for (int i = 0; i < this->root.containerMass.size(); i++)
+					//{
+					//	if (this->root.containerMass.at(i)->getName() == "LinkedList " + DOP_next->get_name())
+					//	{
+					//		alredyExist = true;
+					//		RootObject* list = this->root.containerMass.at(i); // tebe nado otchistit list pered novoi zapisiu
+					//	}
+					//}
+					//if (alredyExist == false)
+					//{
+						//Line* line = new Line();
+						LinkedList* list = new LinkedList("LinkedList " + DOP_next->get_name());
+						parentObject->AddSon(list);
+						list->AddParent(parentObject);
+						this->root.containerMass.push_back(list);
+					//}
+					this->currentLine += 1;
+
+					try
+					{
+						functionStart = LinkedListTree(list, functionStart);
 					}
 					catch (LexerException& ex)
 					{
@@ -402,6 +442,60 @@ std::vector<Token>::iterator Parser::FormulaTree(RootObject* parentObject, std::
 	}
 
 	return lineStart;
+}
+
+std::vector<Token>::iterator Parser::LinkedListTree(RootObject* parentObject, std::vector<Token>::iterator functionStart) ////////////////////
+{
+	functionStart = functionStart + 3; // na ravno
+
+	std::cout << functionStart->get_name() << std::endl;
+
+	if (functionStart->get_name() != "Равно" && functionStart->get_Kind() != Token::Kind::БинарныйОператор)
+		throw LexerException("semantic error", this->currentLine);
+	Formula* formula = new Formula(functionStart->get_name(), 0);
+	formula->AddParent(parentObject);
+	parentObject->AddSon(formula);
+
+	functionStart += 1;
+	if (functionStart->get_Kind() != Token::Kind::ЛеваяКвадратнаяСкобка)
+		throw LexerException("semantic error", this->currentLine);
+
+
+	std::cout << functionStart->get_name() << std::endl;
+
+	functionStart += 1; // peremennaia
+	while (functionStart->get_Kind() != Token::Kind::ПраваяКвадратнаяСкобка)
+	{
+
+		if (functionStart->get_Kind() != Token::Kind::Число)
+		{
+			throw LexerException("semantic error", this->currentLine);
+		}
+		else
+		{
+			Variable* var = new Variable(functionStart->get_value(), "");
+			std::cout << functionStart->get_value() << std::endl;
+			parentObject->AddSon(var);
+			std::cout << functionStart->get_value() << std::endl;
+			var->AddParent(parentObject);
+		}
+		std::cout << functionStart->get_value() << std::endl;
+		functionStart += 1;
+
+		if (functionStart->get_Kind() != Token::Kind::Запятая && functionStart->get_Kind() != Token::Kind::ПраваяКвадратнаяСкобка)
+			throw LexerException("semantic error", this->currentLine);
+		std::cout << functionStart->get_name() << std::endl;
+		if (functionStart->get_Kind() == Token::Kind::ПраваяКвадратнаяСкобка)
+			break;
+
+		functionStart += 1;
+	}
+
+	functionStart += 1;
+	if (functionStart->get_Kind() != Token::Kind::НоваяСтрока)
+		throw LexerException("semantic error", this->currentLine);
+
+	return functionStart;
 }
 
 void Parser::DrawTree(RootObject root, std::string ot)

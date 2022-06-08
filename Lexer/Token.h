@@ -21,7 +21,18 @@ public:
 		Ћева€‘игурна€—кобка,
 		ѕрава€‘игурна€—кобка,
 		Ћева€ вадратна€—кобка,
-		ѕрава€ вадратна€—кобка
+		ѕрава€ вадратна€—кобка,
+		// LinkedList
+		“очка,
+		«ап€та€,
+		LinkedList,
+		LinkedMethod,
+		push_first,
+		push_back,
+		push_in,
+		pop_from,
+		find,
+		size
 	};
 	Token(Kind type, int value, std::string name);
 	Token(Kind type, std::string name);

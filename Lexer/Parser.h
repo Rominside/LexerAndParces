@@ -12,6 +12,8 @@
 #include "Line.h"
 #include "Formula.h"
 #include "Variable.h"
+#include "LinkedList.h"
+#include "Node.h"
 
 
 class Parser
@@ -31,6 +33,7 @@ public:
 
 
 	std::vector<Token>::iterator FormulaTree(RootObject* parentObject, std::vector<Token>::iterator functionStart);
+	std::vector<Token>::iterator LinkedListTree(RootObject* parentObject, std::vector<Token>::iterator functionStart);
 	void DrawTree(RootObject root, std::string ot);
 	RootObject GetRoot();
 private:

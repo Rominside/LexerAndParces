@@ -14,10 +14,13 @@ int main()
                                   \n   Б пюбмн 1  \
 		                          \n   Ю пюбмн 10 \
 		                          \n   А пюбмн 45 \
+                                  \n   List ЛНИКХЯР пюбмн [1, 3, 10] \
+                                  \n   ЛНИКХЯР. push_back(А) \
+                                  \n   Ю пюбмн ЛНИКХЯР. size()     \
                                   \n   еякх Б окчя 10 > 0 \
                                   \n   ( \
                                   \n      Ю пюбмн Ю окчя 5 \
-                                  \n      А пюбмн 10 слмнфхрэ  [ 2 окчя 4 ] окчя 34 \
+                                  \n      А пюбмн 10 слмнфхрэ  [2 окчя 4] окчя 34 \
                                   \n   ) \
                                   \n   сякнбмшижхйк Ю < А \
                                   \n   ( \
@@ -28,7 +31,7 @@ int main()
 	std::cout << character_stream << std::endl;
 	Lexer My_lxer;
 	My_lxer.Pars_text(character_stream);
-	My_lxer.Lexer_analis();
+	My_lxer.Lexer_analis(); ///////
 	My_lxer.Get_Token_mass();
 
 	Parser pr;

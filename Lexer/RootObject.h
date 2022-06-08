@@ -25,6 +25,7 @@ public:
 
 	std::vector<RootObject*> sonsMass;
 	std::vector<RootObject*> variableMass;
+	std::vector<RootObject*> containerMass;
 protected:
 	std::string name;
 	int value;

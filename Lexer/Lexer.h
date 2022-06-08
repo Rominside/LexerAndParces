@@ -10,6 +10,8 @@
 class Lexer
 {
 public:
+	std::vector<std::string> Next_tokens(std::string words);
+
 	std::string Next_token(std::string text);
 	void Lexer_analis();
 	void Get_Token_mass();

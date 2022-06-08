@@ -146,7 +146,9 @@
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="LexerExecpions.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="RootObject.cpp" />
     <ClCompile Include="Token.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="LexerExecpions.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="RootObject.h" />
     <ClInclude Include="Token.h" />
